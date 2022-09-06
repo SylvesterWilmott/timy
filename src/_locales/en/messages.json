@@ -1,0 +1,41 @@
+{
+  "ext_name": {
+    "message": "Timy: Automatic Time Tracker"
+  },
+  "ext_description": {
+    "message": "A simple time tracker that automatically pauses itself when you're idle."
+  },
+  "new": {
+    "message": "New Session"
+  },
+  "pause": {
+    "message": "Pause"
+  },
+  "unpause": {
+    "message": "Resume"
+  },
+  "status_enabled": {
+    "message": "Enabled"
+  },
+  "status_disabled": {
+    "message": "Paused"
+  },
+  "hours_short": {
+    "message": "h"
+  },
+  "hours_long": {
+    "message": "hours"
+  },
+  "hours_long_singular": {
+    "message": "hour"
+  },
+  "minutes_short": {
+    "message": "m"
+  },
+  "minutes_long": {
+    "message": "minutes"
+  },
+  "minutes_long_singular": {
+    "message": "minute"
+  }
+}
