@@ -44,10 +44,10 @@ async function setInitialDuration() {
 async function incrementDuration() {
   let previousDuration = await storage.load("sessionDuration", 0);
   let newDuration = previousDuration + 1;
-  let formattedDurationShort = time.getFormattedShort(duration);
-  let formattedDurationLong = time.getFormattedLong(duration);
-
   await storage.save("sessionDuration", newDuration);
+
+  let formattedDurationShort = time.getFormattedShort(newDuration);
+  let formattedDurationLong = time.getFormattedLong(newDuration);
 
   updateBadgeText(formattedDurationShort);
   updateBadgeColor("enabled");
