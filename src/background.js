@@ -32,28 +32,34 @@ async function resumeSession() {
 
 async function setInitialDuration() {
   let duration = await storage.load("sessionDuration", 0);
-  let formattedDuration = time.getFormattedShort(duration);
+  let formattedDurationShort = time.getFormattedShort(duration);
+  let formattedDurationLong = time.getFormattedLong(duration);
 
-  updateBadgeText(formattedDuration);
+  updateBadgeText(formattedDurationShort);
   updateBadgeColor("enabled");
+
+  chrome.action.setTitle({ title: formattedDurationLong });
 }
 
 async function incrementDuration() {
   let previousDuration = await storage.load("sessionDuration", 0);
   let newDuration = previousDuration + 1;
-  let formattedDuration = time.getFormattedShort(newDuration);
-
   await storage.save("sessionDuration", newDuration);
 
-  updateBadgeText(formattedDuration);
+  let formattedDurationShort = time.getFormattedShort(newDuration);
+  let formattedDurationLong = time.getFormattedLong(newDuration);
+
+  updateBadgeText(formattedDurationShort);
   updateBadgeColor("enabled");
+
+  chrome.action.setTitle({ title: formattedDurationLong });
 }
 
 async function clearAlarm() {
   await alarm.clear("timer");
 }
 
-async function updateBadgeText(str) {
+function updateBadgeText(str) {
   chrome.action.setBadgeText({ text: str });
 }
 
