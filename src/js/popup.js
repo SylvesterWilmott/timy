@@ -13,18 +13,22 @@ let navIndex; // Current navigation index
 document.addEventListener("DOMContentLoaded", init);
 
 function init() {
-  loadNavigation();
-  startListeners();
-  displayStatus();
+  setupNavigation();
+  setupListeners();
+  updatePauseButton();
   displayDuration();
   i18n.localize();
 }
 
-function startListeners() {
-  document.getElementById("actions").addEventListener("click", onActionsClick);
+function setupListeners() {
+  let navItems = document.querySelectorAll(".nav-index");
+
+  for (let item of navItems) {
+    item.addEventListener("click", onNavItemClicked);
+  }
+
   document.addEventListener("keydown", documentOnKeydown, false);
   document.addEventListener("mouseout", documentOnMouseout, false);
-
   chrome.storage.onChanged.addListener(onStorageChanged);
 }
 
@@ -36,7 +40,7 @@ function documentOnKeydown(e) {
   }
 }
 
-async function onActionsClick(e) {
+async function onNavItemClicked(e) {
   let target = e.target;
 
   switch (e.target.id) {
@@ -64,39 +68,37 @@ async function onPauseSessionClicked() {
     await message.send("resumeSession");
   }
 
-  displayStatus();
+  updatePauseButton();
 }
 
-async function displayStatus() {
+async function updatePauseButton() {
   let alarmObj = await alarm.get("timer");
   let duration = await storage.load("sessionDuration", 0);
-  let statusEl = document.getElementById("status");
-  let pauseEl = document.getElementById("pause");
+  let el = document.getElementById("pause");
+  let timerStatus = storage.load("timerIsRunning", false);
 
-  if (alarmObj) {
-    statusEl.innerText = constants.STR_STATUS_ENABLED;
-    pauseEl.innerText = constants.STR_PAUSE;
-  } else {
-    statusEl.innerText = constants.STR_STATUS_DISABLED;
-    pauseEl.innerText = constants.STR_UNPAUSE;
+  el.innerText = alarmObj ? constants.STR_PAUSE : constants.STR_UNPAUSE;
+
+  if (!alarmObj && duration === 0) {
+    el.classList.add("disabled");
   }
 }
 
 async function displayDuration() {
   let duration = await storage.load("sessionDuration", 0);
   let formattedDuration = time.getFormattedLong(duration);
-  let durationEl = document.getElementById("duration");
+  let el = document.getElementById("duration");
 
-  durationEl.innerText = formattedDuration;
+  el.innerText = formattedDuration;
 }
 
-async function onStorageChanged(changes, namespace) {
+function onStorageChanged(changes, namespace) {
   if (changes.sessionDuration) {
     displayDuration();
   }
 }
 
-function loadNavigation() {
+function setupNavigation() {
   listNavItems = document.querySelectorAll(".nav-index");
 
   for (let [i, item] of listNavItems.entries()) {

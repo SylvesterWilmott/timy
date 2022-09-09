@@ -14,12 +14,6 @@
   "unpause": {
     "message": "Resume"
   },
-  "status_enabled": {
-    "message": "Enabled"
-  },
-  "status_disabled": {
-    "message": "Paused"
-  },
   "hours_short": {
     "message": "h"
   },
