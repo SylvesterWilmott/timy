@@ -6,7 +6,7 @@
 
 body {
   background-color: var(--surface);
-  width: 320px;
+  width: 300px;
   opacity: 1;
   transition: opacity 250ms ease-out;
   overflow: auto;
