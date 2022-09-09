@@ -75,10 +75,11 @@ async function updatePauseButton() {
   let alarmObj = await alarm.get("timer");
   let duration = await storage.load("sessionDuration", 0);
   let el = document.getElementById("pause");
+  let timerStatus = storage.load("timerIsRunning", false);
 
   el.innerText = alarmObj ? constants.STR_PAUSE : constants.STR_UNPAUSE;
 
-  if (duration === 0) {
+  if (!alarmObj && duration === 0) {
     el.classList.add("disabled");
   }
 }
