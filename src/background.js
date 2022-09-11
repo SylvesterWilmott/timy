@@ -9,6 +9,7 @@ chrome.idle.setDetectionInterval(constants.IDLE_THRESHOLD); // Time in seconds f
 chrome.idle.onStateChanged.addListener(onIdleStateChanged);
 chrome.alarms.onAlarm.addListener(onAlarmTick);
 chrome.runtime.onMessage.addListener(onPopupMessage);
+chrome.runtime.onStartup.addListener(onStartup);
 
 async function start() {
   alarm.create("timer", constants.TIMER_DELAY, constants.TIMER_PERIOD);
@@ -73,6 +74,10 @@ function updateBadgeColor(status) {
   }
 
   chrome.action.setBadgeBackgroundColor({ color: color });
+}
+
+async function onStartup() {
+  setInitialDuration();
 }
 
 async function onIdleStateChanged(state) {
