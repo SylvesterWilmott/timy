@@ -5,7 +5,8 @@ import * as storage from "./js/storage.js";
 import * as alarm from "./js/alarm.js";
 import * as time from "./js/duration.js";
 
-chrome.idle.setDetectionInterval(constants.IDLE_THRESHOLD); // Time in seconds for idle state to change
+chrome.idle.setDetectionInterval(constants.IDLE_THRESHOLD);
+
 chrome.idle.onStateChanged.addListener(onIdleStateChanged);
 chrome.alarms.onAlarm.addListener(onAlarmTick);
 chrome.runtime.onMessage.addListener(onPopupMessage);
@@ -77,6 +78,7 @@ function updateBadgeColor(status) {
 }
 
 async function onStartup() {
+  await storage.clear("status"); // Clean status
   setInitialDuration();
 }
 
@@ -87,11 +89,11 @@ async function onIdleStateChanged(state) {
     switch (state) {
       case "idle":
       case "locked":
-        await storage.saveSession("status", "disabled");
+        await storage.save("status", "disabled");
         updateBadgeColor("disabled");
         break;
       case "active":
-        await storage.saveSession("status", "enabled");
+        await storage.save("status", "enabled");
         updateBadgeColor("enabled");
         break;
     }
@@ -100,7 +102,7 @@ async function onIdleStateChanged(state) {
 
 async function onAlarmTick(alarm) {
   if (alarm.name === "timer") {
-    let status = await storage.loadSession("status", "enabled");
+    let status = await storage.load("status", "enabled");
 
     if (status === "enabled") {
       incrementDuration();

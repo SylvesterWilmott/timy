@@ -42,35 +42,3 @@ export function clear(key) {
     });
   });
 }
-
-export function saveSession(key, value) {
-  return new Promise((resolve, reject) => {
-    chrome.storage.session.set(
-      {
-        [key]: value,
-      },
-      function () {
-        if (chrome.runtime.lastError) {
-          console.log(chrome.runtime.lastError.message);
-        }
-        resolve();
-      }
-    );
-  });
-}
-
-export function loadSession(key, defaults) {
-  return new Promise((resolve, reject) => {
-    chrome.storage.session.get(
-      {
-        [key]: defaults,
-      },
-      function (value) {
-        if (chrome.runtime.lastError) {
-          console.log(chrome.runtime.lastError.message);
-        }
-        resolve(value[key]);
-      }
-    );
-  });
-}
