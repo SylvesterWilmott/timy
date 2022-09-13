@@ -12,11 +12,11 @@ let navIndex; // Current navigation index
 
 document.addEventListener("DOMContentLoaded", init);
 
-function init() {
+async function init() {
+  await updatePauseButton();
+  await displayDuration();
   setupNavigation();
   setupListeners();
-  updatePauseButton();
-  displayDuration();
   i18n.localize();
 }
 
