@@ -11,6 +11,7 @@ chrome.idle.onStateChanged.addListener(onIdleStateChanged);
 chrome.alarms.onAlarm.addListener(onAlarmTick);
 chrome.runtime.onMessage.addListener(onPopupMessage);
 chrome.runtime.onStartup.addListener(onStartup);
+chrome.runtime.onInstalled.addListener(onStartup);
 
 async function start() {
   alarm.create("timer", constants.TIMER_DELAY, constants.TIMER_PERIOD);
@@ -36,9 +37,15 @@ async function setInitialDuration() {
   let duration = await storage.load("sessionDuration", 0);
   let formattedDurationShort = time.getFormattedShort(duration);
   let formattedDurationLong = time.getFormattedLong(duration);
+  let alarmObj = await alarm.get("timer");
 
   updateBadgeText(formattedDurationShort);
-  updateBadgeColor("enabled");
+
+  if (alarmObj) {
+    updateBadgeColor("enabled");
+  } else {
+    updateBadgeColor("disabled");
+  }
 
   chrome.action.setTitle({ title: formattedDurationLong });
 }
