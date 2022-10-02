@@ -78,7 +78,7 @@ function updateBadgeColor(status) {
   if (status === "disabled") {
     color = "#DDDDDD";
   } else {
-    color = "#141E52";
+    color = "#43577F";
   }
 
   chrome.action.setBadgeBackgroundColor({ color: color });
